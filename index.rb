@@ -8,6 +8,8 @@ require 'json'
 # require FIle.expand_path( "../lib/query.rb" )
 # require FIle.expand_path( "../lib/filter.rb" )
 
+require 'uri'
+
 get '/' do
   # Description of API
   'Hello, World'
@@ -15,16 +17,8 @@ end
 
 get '/test/:id/' do
   view_id = params[:id]
-  query = request.query_string
-
-  3.times { puts "" }
-  puts "=================================================================="
-  puts "view_id: #{view_id}"
-  puts query
-  3.times { puts "" }
-
-  query.slice!( 'query=' )
-  json = JSON.load( query )
+  query = params["query"]
+  json = JSON.parse( URI.decode query )
 
   # filters = LodViewRewrite::Filters.new( query ).to_a
 
