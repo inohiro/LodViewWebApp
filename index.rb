@@ -4,6 +4,9 @@ require 'pp'
 # require File.expand_path( "~/github/LodViewRewrite/lib/lod_view_rewrite.rb" )
 # require LodViewRewrite
 
+require FIle.expand_path( "../lib/query.rb" )
+require FIle.expand_path( "../lib/filter.rb" )
+
 get '/' do
   # Description of API
   'Hello, World'
@@ -19,7 +22,12 @@ get '/test/:id/' do
   puts query
   3.times { puts "" }
 
-  "view_id: #{view_id}, query: #{query}"
+  query = query.slice!( 'query=' )
+  json = JSON.load( query )
+
+  # filters = LodViewRewrite::Filters.new( query ).to_a
+
+  "view_id: #{view_id}, query: #{json}"
 end
 
 get '/views' do
