@@ -23,7 +23,7 @@ get '/test/:id/' do
   puts query
   3.times { puts "" }
 
-  query = query.slice!( 'query=' )
+  query.slice!( 'query=' )
   json = JSON.load( query )
 
   # filters = LodViewRewrite::Filters.new( query ).to_a
