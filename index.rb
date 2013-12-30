@@ -1,12 +1,16 @@
+# coding: utf-8
+
 require 'sinatra'
 require 'pp'
 require 'json'
 
+require 'newrelic_rpm'
+
 # require File.expand_path( "~/github/LodViewRewrite/lib/lod_view_rewrite.rb" )
 # require LodViewRewrite
 
-# require FIle.expand_path( "../lib/query.rb" )
-# require FIle.expand_path( "../lib/filter.rb" )
+# require File.expand_path( "../lib/query.rb" )
+# require File.expand_path( "../lib/filter.rb" )
 
 require 'uri'
 
