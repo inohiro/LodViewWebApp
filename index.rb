@@ -4,8 +4,8 @@ require 'pp'
 # require File.expand_path( "~/github/LodViewRewrite/lib/lod_view_rewrite.rb" )
 # require LodViewRewrite
 
-require FIle.expand_path( "../lib/query.rb" )
-require FIle.expand_path( "../lib/filter.rb" )
+# require FIle.expand_path( "../lib/query.rb" )
+# require FIle.expand_path( "../lib/filter.rb" )
 
 get '/' do
   # Description of API
