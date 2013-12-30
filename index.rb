@@ -18,6 +18,8 @@ get '/test/:id/' do
   puts "view_id: #{view_id}"
   puts query
   3.times { puts "" }
+
+  "view_id: #{view_id}, query: #{query}"
 end
 
 get '/views' do
