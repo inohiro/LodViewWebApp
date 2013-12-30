@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'pp'
+require 'json'
 
 # require File.expand_path( "~/github/LodViewRewrite/lib/lod_view_rewrite.rb" )
 # require LodViewRewrite
