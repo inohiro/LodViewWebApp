@@ -83,7 +83,8 @@ get '/api/fixed/1/' do
   query = LodViewRewrite::Query.new( view )
   result = query.exec_sparql
 
-  content_type 'application/json'
+  # content_type 'application/json'
+  # result.gsub( /\s+/, "")
   result
 end
 
@@ -98,29 +99,32 @@ get '/api/fixed/2/' do
 
   result = query.exec_sparql( condition )
 
-  content_type 'application/json'
+  # content_type 'application/json'
   result
+  # result.gsub( /\s+/, "")
   # json( {:result => result}, :encoder => :to_json, :content_type => :js )
 end
 
 get '/api/fixed/3/' do
   view = test_view
   query = LodViewRewrite::Query.new( view )
-
   decoded = URI.decode( params['query'] )
-  query_condition = decoded.to_json
-  condition = LodViewRewrite::Condition.new( query_condition )
+  condition = LodViewRewrite::Condition.new decoded
 
   require 'pp'
-  puts '################################################'
+
+  3.times { puts "" }
   pp condition
-
+  puts ""
   sparql = query.to_sparql( condition )
-  puts "SPARQL: #{sparql}"
+  puts sparql
+  3.times { puts "" }
 
-  result = query.exec_sparql( condition )
-  content_type 'application/json'
-  result
+  # result = query.exec_sparql( condition )
+  # content_type 'application/json'
+  # result.gsub( /\s+/, "")
+  # result
+  "HELLO"
 end
 
 def test_view
