@@ -15,7 +15,7 @@ GEM
       dotenv (>= 0.7)
       thor (>= 0.13.6)
     json (1.8.1)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     net-http-persistent (2.9)
     newrelic_rpm (3.7.1.182)
     rack (1.5.2)

@@ -75,8 +75,96 @@ def get_view( view_id )
   }
 
   # queries[view_id]
-
 end
+
+def exp2_view
+  view =<<EOQ
+PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>
+PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT *
+WHERE {
+ ?product rdfs:label ?label .
+ ?product a bsbm-inst:ProductType55 .
+ ?product bsbm:productPropertyNumeric1 ?value .
+}
+EOQ
+  view
+end
+
+def exp1_view
+  view =<<EOQ
+PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>
+PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT *
+WHERE {
+ ?product rdfs:label ?label .
+ ?product a bsbm-inst:ProductType100 .
+ ?product bsbm:productPropertyNumeric1 ?value .
+}
+EOQ
+  view
+end
+
+def exp3_view
+  view=<<EOQ
+PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>
+PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT AVG(?value) AS ?avgvalue
+WHERE {
+ ?product rdfs:label ?label .
+ ?product a bsbm-inst:ProductType100 .
+ ?product bsbm:productPropertyNumeric1 ?value .
+ FILTER (?value <= 400 )
+}
+LIMIT 1000
+EOQ
+
+  view
+end
+
+require 'pp'
+
+get '/exp/1/' do
+  cond = params[:query]
+
+  # 3.times { p '' }
+  # p cond.to_s
+  # 3.times { p '' }
+
+  view = exp1_view
+  query = LodViewRewrite::Query.new( view )
+  condition = LodViewRewrite::Condition.new( cond )
+
+  query.exec_sparql( condition )
+  # result = query.exec_sparql( condition )
+  # result
+end
+
+get '/exp/2/' do
+  cond = params[:query]
+
+  3.times { puts "" }
+  pp cond
+  3.times { puts "" }
+
+  view = exp2_view
+  query = LodViewRewrite::Query.new( view )
+  condition = LodViewRewrite::Condition.new( cond )
+
+  result = query.exec_sparql( condition )
+  result
+end
+
+
 
 get '/api/fixed/1/' do
   view = test_view
@@ -107,9 +195,15 @@ end
 
 get '/api/fixed/3/' do
   view = test_view
-  query = LodViewRewrite::Query.new( view )
+  query = LodViewRewrite::Query.new( view, :tsv, 1000 )
   decoded = URI.decode( params['query'] )
-  condition = LodViewRewrite::Condition.new decoded
+
+  puts '--------------------------------------------------------------'
+  puts decoded
+
+
+  condition = LodViewRewrite::Condition.new( decoded, :tsv )
+
 
   require 'pp'
 
@@ -120,11 +214,13 @@ get '/api/fixed/3/' do
   puts sparql
   3.times { puts "" }
 
+  "HELLO"
+
   # result = query.exec_sparql( condition )
+  # result = query.exec_sparql
   # content_type 'application/json'
   # result.gsub( /\s+/, "")
   # result
-  "HELLO"
 end
 
 def test_view
