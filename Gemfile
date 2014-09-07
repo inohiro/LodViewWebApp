@@ -6,7 +6,7 @@ gem 'sinatra-contrib'
 gem 'redis'
 gem 'foreman'
 
-gem 'LodViewRewrite'
+gem 'LodViewRewrite', github: 'inohiro/LodViewRewrite'
 
 group :test do
   gem 'rspec'
