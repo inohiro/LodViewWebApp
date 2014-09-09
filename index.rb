@@ -1,13 +1,15 @@
 # coding: utf-8
 
+require_relative './lib/LodViewRewrite.rb'
+
 require 'sinatra'
 require 'sinatra/json'
 
 require 'pp'
 require 'json'
 
-require 'LodViewRewrite'
-require 'newrelic_rpm'
+# require 'LodViewRewrite'
+# require 'newrelic_rpm'
 
 # require File.expand_path( "~/github/LodViewRewrite/lib/lod_view_rewrite.rb" )
 # require LodViewRewrite
@@ -131,22 +133,28 @@ EOQ
   view
 end
 
+def dbpedia_view1
+  view =<<EOQ
+PREFIX dbpedia-owl: <http://dbpedia.org/ontology/>
+
+select *
+where {
+  ?subject dbpedia-owl:leaderTitle ?object .
+}
+EOQ
+  view
+end
+
 require 'pp'
 
 get '/exp/1/' do
   cond = params[:query]
 
-  # 3.times { p '' }
-  # p cond.to_s
-  # 3.times { p '' }
-
-  view = exp1_view
+  view = dbpedia_view1
   query = LodViewRewrite::Query.new( view )
   condition = LodViewRewrite::Condition.new( cond )
 
   query.exec_sparql( condition )
-  # result = query.exec_sparql( condition )
-  # result
 end
 
 get '/exp/2/' do
@@ -163,8 +171,6 @@ get '/exp/2/' do
   result = query.exec_sparql( condition )
   result
 end
-
-
 
 get '/api/fixed/1/' do
   view = test_view

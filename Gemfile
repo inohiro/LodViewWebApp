@@ -8,7 +8,8 @@ gem 'sinatra-contrib'
 gem 'redis'
 gem 'foreman'
 
-gem 'LodViewRewrite', github: 'inohiro/LodViewRewrite'
+gem 'sparql'
+gem 'net-http-persistent'
 
 group :test do
   gem 'rspec'
